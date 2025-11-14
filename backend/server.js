@@ -1,6 +1,7 @@
 import express from "express";
 import authRouter from "./auth/authRouter.js";
 import movieRouter from "./resource/movie/moviesRoutes.js";
+import { envConfig } from "./util/env.config.js";
 
 const app = express();
 
@@ -12,6 +13,6 @@ app.get("/", (req, res) => {
   res.send("Hello!");
 });
 
-app.listen(3000, () => {
-  console.log("Listening to port 3000.");
+app.listen(envConfig.PORT, () => {
+  console.log(`Listening to port ${envConfig.PORT}.`);
 });

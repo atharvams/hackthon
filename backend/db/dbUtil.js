@@ -1,12 +1,12 @@
 import mysql from "mysql2/promise";
+import { envConfig } from "../util/env.config.js";
 
 const connection = await mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "manager",
-  database: "movie_system",
+  host: envConfig.MYSQL_CONFIG.host,
+  user: envConfig.MYSQL_CONFIG.user,
+  password: envConfig.MYSQL_CONFIG.password,
+  database: envConfig.MYSQL_CONFIG.database,
 });
 
-// A simple SELECT query
 
 export default connection;
