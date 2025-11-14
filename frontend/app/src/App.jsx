@@ -8,9 +8,10 @@ import EditProfile from './components/edit-profile/EditProfile'
 const App = () => {
   return (
     <div>
-      <Navbar />
+      <SignUp/>
+      {/* <Navbar /> */}
       {/* <ChangePassword /> */}
-      <EditProfile/>
+      {/* <EditProfile/> */}
     </div>
 
   )
