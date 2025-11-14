@@ -83,7 +83,7 @@ export function validateRegistration(userData) {
 }
 
 export function validateLoginCred(userData) {
-  // Use the schema to validate the data
+  
   const { error } = loginSchema.validate(userData, {
     abortEarly: false,
   });
