@@ -3,9 +3,14 @@ import React from 'react'
 import Login from './components/login-page/Login'
 import SignUp from './components/signup-page/SignUp'
 import Navbar from './components/navbar/Navbar'
+import ChangePassword from './components/change-password/ChangePassword'
 const App = () => {
   return (
-    <Navbar/>
+    <div>
+      <Navbar />
+      <ChangePassword />
+    </div>
+
   )
 }
 
