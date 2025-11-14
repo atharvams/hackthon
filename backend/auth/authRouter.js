@@ -4,11 +4,14 @@ import {
   validateRegistration,
 } from "../util/validationUtil.js";
 import connection from "../db/dbUtil.js";
+import jwt from "jsonwebtoken";
+import { envConfig } from "../util/env.config.js";
+import bcrypt from "bcrypt";
+
 const authRouter = express.Router();
 
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
-  
 
   //validation (joi)
   const validationErrors = validateLoginCred(req.body);
@@ -17,21 +20,36 @@ authRouter.post("/login", async (req, res) => {
   }
 
   const doesUserExistsQuery =
-    "select user_id, email, first_name, last_name from users where email = ? and password = ?;";
+    "select user_id, email, first_name, last_name, password from users where email = ?;";
 
   try {
-    const [result] = await connection.execute(doesUserExistsQuery, [
-      email,
-      password,
-    ]);
-    console.log(result);
+    const [result] = await connection.execute(doesUserExistsQuery, [email]);
+
     if (result.length > 0) {
-      res
-        .send({
-          message: "Success!",
-          data: result,
-        })
-        .status(200);
+      const isMatch = await bcrypt.compare(password, result[0].password);
+      if (isMatch) {
+        const jwtToken = jwt.sign(
+          {
+            user_id: result[0].user_id,
+            email: result[0].email,
+            firstName: result[0].firstName,
+            lastName: result[0].lastName,
+          },
+          envConfig.JWT_SECRET
+        );
+        res
+          .send({
+            message: "Success!",
+            token: jwtToken,
+          })
+          .status(200);
+      } else {
+        res
+          .send({
+            message: "Invalid password!",
+          })
+          .status(200);
+      }
     } else {
       res
         .send({
@@ -42,7 +60,6 @@ authRouter.post("/login", async (req, res) => {
   } catch (err) {
     console.log(err);
     res
-      .sendStatus(500)
       .send({
         message: "Error While login!",
       })
@@ -77,10 +94,11 @@ authRouter.post("/register", async (req, res) => {
       // otherwise save to db
       const saveUserQuery =
         "insert into users (first_name, last_name, email, birth, password, mobile) values (?, ?, ?, ?, ?, ?)";
+      const hash = await bcrypt.hash(password, 10);
 
-      const [resultForNewUserRegistration, fields] = await connection.execute(
+      const [resultForNewUserRegistration] = await connection.execute(
         saveUserQuery,
-        [firstName, lastName, email, dateOfBirth, password, mobileNo]
+        [firstName, lastName, email, dateOfBirth, hash, mobileNo]
       );
 
       console.log(resultForNewUserRegistration.affectedRows);
