@@ -8,12 +8,14 @@ import EditProfile from './components/edit-profile/EditProfile'
 import EditReview from './components/edit-review/EditReview'
 import ReviewCard from './components/review-card/ReviewCard'
 import ShareReview from './components/share-review/ShareReview'
+import DeleteReview from './components/delete-review/DeleteReview'
 const App = () => {
   return (
     <div>
       <Navbar />
       {/* <ReviewCard/> */}
       <ShareReview/>
+      <DeleteReview/>
       {/* <SignUp/> */}
       {/* <Login/> */}
       {/* <ChangePassword /> */}

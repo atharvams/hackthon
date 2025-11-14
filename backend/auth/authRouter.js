@@ -8,6 +8,7 @@ const authRouter = express.Router();
 
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
+  
 
   //validation (joi)
   const validationErrors = validateLoginCred(req.body);
