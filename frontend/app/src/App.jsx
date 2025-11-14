@@ -1,10 +1,10 @@
 import React from 'react'
 
+import Login from './components/login-page/Login'
+
 const App = () => {
   return (
-    <div>
-      Working
-    </div>
+    <Login/>
   )
 }
 
