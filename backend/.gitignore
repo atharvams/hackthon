@@ -2,6 +2,7 @@
 node_modules/
 .pnp/
 .pnp.cjs
+package-lock.json
 
 # Log files
 npm-debug.log*
